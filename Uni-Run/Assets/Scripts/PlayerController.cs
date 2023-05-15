@@ -87,10 +87,18 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 바닥에 닿았음을 감지하는 처리
+        if(collision.contacts[0].normal.y>0.7f)
+        {
+            // isGrounded를 true로 변경하고, 누적 점프 횟수를 0으로 리셋
+            isGrounded = true;
+            jumpCount = 0;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         // 바닥에 벗어났음을 감지하는 처리
+        // 어떤 콜라이더에서 떼어진 경우 isGrounded를 fales로 변경
+        isGrounded = false;
     }
 }
