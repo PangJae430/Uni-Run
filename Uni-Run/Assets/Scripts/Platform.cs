@@ -9,10 +9,34 @@ public class Platform : MonoBehaviour
     private void OnEnable()
     {
         // 발판을 리셋하는 처리
+        // 밟힘 상태를 리셋
+        stepped = false;
+        
+        // 장애물의 수만큼 루프
+        for(int i =0; i<obstacles.Length; i++)
+        {
+            // 현재 순번의 장애물을 1/3의 활률로 활성화
+            if(Random.Range(0,3)==0)
+            {
+                obstacles[i].SetActive(true);
+            }
+            else
+            {
+                obstacles[i].SetActive(false);
+            }
+        }
     }
 
-    void OnCollisionEnter2D()
+    void OnCollisionEnter2D(Collision2D collision)
     {
         // 플레이어 캐릭터가 자신을 밟았을 때 점수를 추가하는 처리
+        // 충돌한 상대방의 태그가 Player이고 이전에 플레이어 캐릭터가 밟지 않았다면
+        if(collision.collider.tag == "Player" && !stepped)
+        {
+            // 점수를 추가하고 밟힘 상태를 참으로 변경
+            stepped = true;
+            GameManager.instance.AddScore(10);
+        }
+
     }
 }
